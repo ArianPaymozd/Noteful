@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Note from '../Note/Note'
@@ -11,9 +12,14 @@ export default class NoteListMain extends React.Component {
     static defaultProps = {
         match: {
             params: {}
-        }
+        },
+        history: {push: () => {}}
     }
     static contextType = ApiContext
+
+    handleDeleteNote = noteId => {
+        this.props.history.push(`/`)
+    }
 
     render() {
         const {folderId} = this.props.match.params
@@ -28,6 +34,7 @@ export default class NoteListMain extends React.Component {
                                 id={note.id}
                                 name={note.name}
                                 modified={note.modified}
+                                onDeleteNote={this.handleDeleteNote}
                             />
                         </li>
                     )}
@@ -47,4 +54,8 @@ export default class NoteListMain extends React.Component {
             </section>
         )
     }
+}
+
+NoteListMain.propTypes = {
+    history: PropTypes.object
 }

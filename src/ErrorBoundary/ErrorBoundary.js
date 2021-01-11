@@ -1,10 +1,14 @@
 import React from 'react' 
+import PropTypes from 'prop-types'
+import ApiContext from '../ApiContext'
 import './ErrorBoundary.css'
 
 class ErrorBoundary extends React.Component {
+    static contextType = ApiContext
     state = {
         hasError: false
     }
+
 
     static getDirivedStateFromError(error) {
         return {
@@ -22,6 +26,10 @@ class ErrorBoundary extends React.Component {
         }
         return this.props.children
     }
+}
+
+ErrorBoundary.propTypes = {
+    children: PropTypes.element
 }
 
 export default ErrorBoundary

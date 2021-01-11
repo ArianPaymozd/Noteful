@@ -1,9 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import NotefulForm from '../NotefulForm/NotefulForm'
 import ApiContext from '../ApiContext'
 import config from '../config'
 import './AddFolder.css'
-import ValidationError from '../ValidateName/ValidationError'
+import ValidationError from '../ValidateError/ValidationError'
 
 export default class AddFolder extends React.Component {
     static defaultProps = {
@@ -18,7 +19,11 @@ export default class AddFolder extends React.Component {
         name: {
             value: ' ',
             touched: false
-        }
+        },
+        error: {
+            status: false,
+        },
+        errorMessage: ''
     }
 
     handleSubmit = (e) => {
@@ -38,8 +43,12 @@ export default class AddFolder extends React.Component {
                 body: JSON.stringify(folder),
             })
             .then(res => {
-                if (!res.ok)
+                if (!res.ok) {
+                    this.setState({
+                        errorMessage: `${res.status}: ${res.statusText}`
+                    })
                     return res.json().then((e) => Promise.reject(e))
+                }
                 return res.json()
             })
             .then(folder => {
@@ -47,7 +56,11 @@ export default class AddFolder extends React.Component {
                 this.props.history.push(`/folder/${folder.id}`)
             })
             .catch(error => {
-                console.error({error})
+                this.setState({
+                    error: {
+                        status: true,
+                    }
+                })
             })
         }
         
@@ -61,7 +74,7 @@ export default class AddFolder extends React.Component {
     }
 
     render() {
-        return (
+        return this.state.error.status ? <div className='error-container'><p><b>{this.state.errorMessage}</b></p></div> : (
             <section className='AddFolder'>
                 <h2>Create Folder</h2>
                 <NotefulForm onSubmit={this.handleSubmit}>
@@ -83,4 +96,8 @@ export default class AddFolder extends React.Component {
             </section>
         )
     }
+}
+
+AddFolder.propTypes = {
+    history: PropTypes.object
 }

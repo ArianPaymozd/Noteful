@@ -70,7 +70,7 @@ class App extends React.Component {
         return (
             <>
                 {['/', '/folder/:folderId'].map(path =>
-                    <ErrorBoundary>
+                    <ErrorBoundary key={path}>
                         <Route
                             exact
                             key={path}
@@ -108,7 +108,7 @@ class App extends React.Component {
         return (
             <>
                 {['/', '/folder/:folderId'].map(path =>
-                    <ErrorBoundary>
+                    <ErrorBoundary key={path}>
                        <Route
                             exact
                             key={path}

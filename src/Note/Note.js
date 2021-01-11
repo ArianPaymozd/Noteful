@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,6 +8,10 @@ import config from '../config'
 import './Note.css'
 
 class Note extends React.Component {
+    static defaultProps = {
+        onDeleteNote: () => {}
+    }
+
     static contextType = ApiContext;
 
     handleClickDelete = e => {
@@ -27,6 +32,7 @@ class Note extends React.Component {
         })
         .then(() => {
             this.context.deleteNote(noteId)
+            this.props.onDeleteNote(noteId)
         })
         .catch(error => {
             console.error({error})
@@ -62,6 +68,10 @@ class Note extends React.Component {
             </div>
         )
     }
+}
+
+Note.propTypes = {
+    onDeleteNote: PropTypes.func
 }
 
 export default Note

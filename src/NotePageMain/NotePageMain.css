@@ -6,6 +6,19 @@
     width: 100%;
 }
 
+.edit-button {
+    background-color: #041a3a;
+    padding: 4px;
+    text-align: center;
+    width: 15vw;
+    border-radius: 8px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
 .NotePageMain_content {
     color: #3a3939;
     max-width: 380px;

@@ -37,6 +37,14 @@ exports[`NoteListNav component renders a .NoteListNav by default 1`] = `
       <br />
       Folder
     </NavCircleButton>
+    <NavCircleButton
+      className="NoteListNav__add-folder-button"
+      onClick={[Function]}
+      tag="a"
+      type="button"
+    >
+      Edit Folders
+    </NavCircleButton>
   </div>
 </div>
 `;

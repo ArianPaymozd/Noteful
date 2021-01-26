@@ -6,6 +6,7 @@ import Note from '../Note/Note'
 import CircleButton from '../CircleButton/CircleButton'
 import ApiContext from '../ApiContext'
 import { getNotesForFolder } from '../notes-helpers'
+
 import './NoteListMain.css'
 
 export default class NoteListMain extends React.Component {
@@ -17,22 +18,22 @@ export default class NoteListMain extends React.Component {
     }
     static contextType = ApiContext
 
-    handleDeleteNote = noteId => {
+    handleDeleteNote = () => {
         this.props.history.push(`/`)
     }
 
     render() {
         const {folderId} = this.props.match.params
         const {notes=[]} = this.context
-        const notesForFolder = getNotesForFolder(notes, folderId)
+        const notesForFolder = getNotesForFolder(notes, parseInt(folderId))
         return (
             <section className='NoteListMain'>
                 <ul>
                     {notesForFolder.map(note =>
-                        <li key={note.id}>
+                        <li key={note.note_id}>
                             <Note
-                                id={note.id}
-                                name={note.name}
+                                id={note.note_id}
+                                name={note.note_name}
                                 modified={note.modified}
                                 onDeleteNote={this.handleDeleteNote}
                             />

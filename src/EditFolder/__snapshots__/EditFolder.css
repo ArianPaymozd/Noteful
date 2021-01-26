@@ -1,0 +1,19 @@
+
+.EditFolder {
+  color: #dedede;
+}
+
+.EditFolder h2 {
+  margin-left: 16px;
+}
+
+.error-container p {
+  text-align: center;
+  width: 70%;
+  font-size: 30px;
+  color: white;
+  padding: 4px;
+  background-color: red;
+  border-radius: 8px;
+  margin: 20%;
+}

@@ -9,7 +9,8 @@ import './Note.css'
 
 class Note extends React.Component {
     static defaultProps = {
-        onDeleteNote: () => {}
+        onDeleteNote: () => {},
+        history: {push: () => {}}
     }
 
     static contextType = ApiContext;
@@ -26,13 +27,13 @@ class Note extends React.Component {
         })
         .then(res => {
             if (!res.ok) {
-                return res.json().then((e) => Promise.reject(e))
+                return res.then((e) => Promise.reject(e))
             }
-            return res.json()
+            return res.status
         })
         .then(() => {
-            this.context.deleteNote(noteId)
             this.props.onDeleteNote(noteId)
+            this.context.deleteNote(noteId)
         })
         .catch(error => {
             console.error({error})
@@ -72,7 +73,7 @@ class Note extends React.Component {
 
 Note.propTypes = {
     onDeleteNote: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     modified: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired
 }

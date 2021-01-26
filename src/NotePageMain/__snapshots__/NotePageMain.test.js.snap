@@ -5,8 +5,23 @@ exports[`NotePageMain component renders a .NotePageMain by default 1`] = `
   className="NotePageMain"
 >
   <Note
+    history={
+      Object {
+        "push": [Function],
+      }
+    }
     onDeleteNote={[Function]}
   />
+  <h4
+    className="edit-button"
+  >
+    <Link
+      replace={false}
+      to="/edit-note/undefined"
+    >
+      edit note
+    </Link>
+  </h4>
   <div
     className="NotePageMain_content"
   >

@@ -32,9 +32,9 @@ export default class AddFolder extends React.Component {
             name: {value: e.target['folder-name'].value, touched: true}
         })
         const folder = {
-            name: e.target['folder-name'].value
+            folder_name: e.target['folder-name'].value
         }
-        if (folder.name.split('').length > 0) {
+        if (folder.folder_name.split('').length > 0) {
             fetch(`${config.API_ENDPOINT}/folders`, {
                 method: 'POST',
                 headers: {
@@ -53,7 +53,7 @@ export default class AddFolder extends React.Component {
             })
             .then(folder => {
                 this.context.addFolder(folder)
-                this.props.history.push(`/folder/${folder.id}`)
+                this.props.history.push(`/folder/${folder.folder_id}`)
             })
             .catch(error => {
                 this.setState({

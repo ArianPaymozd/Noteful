@@ -7,10 +7,12 @@ import NoteListMain from '../NoteListMain/NoteListMain'
 import NotePageMain from '../NotePageMain/NotePageMain'
 import AddFolder from '../AddFolder/AddFolder'
 import AddNote from '../AddNote/AddNote'
+import EditNote from '../EditNote/EditNote'
 import ApiContext from '../ApiContext'
 import config from '../config'
 import './App.css'
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary'
+import EditFolder from '../EditFolder/EditFolder'
 
 class App extends React.Component {
     state = {
@@ -60,9 +62,47 @@ class App extends React.Component {
         })
     }
 
-    handleDeleteNote = noteId => {
+    handleUpdateNote = updatedNote => {
+        const newNotes = this.context.notes.map(note =>
+          (note.note_id === updatedNote.note_id)
+            ? updatedNote
+            : note
+        )
         this.setState({
-            notes: this.state.notes.filter(note => note.id !== noteId)
+          notes: newNotes
+        })
+    }
+
+    handleDeleteNote = noteId => {
+        const newNotes = this.state.notes.filter(note => note.note_id !== noteId)
+        this.setState({
+            notes: newNotes
+        })
+    }
+
+    handleDeleteFolder = folderId => {
+        const newFolders = this.state.folders.filter(folder => folder.folder_id !== folderId)
+        this.setState({
+            folders: newFolders
+        })
+    }
+
+    handleEditNote = editedNote => {
+        const editedNotes = this.state.notes.map(note => {
+            return (note.note_id === editedNote.note_id) ? editedNote : note
+        })
+        
+        this.setState({
+            notes: editedNotes
+        })
+    }
+
+    handleEditFolder = editedFolder => {
+        const editedFolders = this.state.folders.map(folder => {
+            return folder.folder_id === editedFolder.folder_id ? editedFolder : folder
+        })
+        this.setState({
+            folders: editedFolders
         })
     }
 
@@ -97,6 +137,20 @@ class App extends React.Component {
                 <ErrorBoundary>
                     <Route
                         path='/add-note'
+                        component={NotePageNav}
+                    />
+                </ErrorBoundary>
+
+                <ErrorBoundary>
+                    <Route
+                        path='/edit-note'
+                        component={NotePageNav}
+                    />
+                </ErrorBoundary>
+
+                <ErrorBoundary>
+                    <Route
+                        path='/edit-folder'
                         component={NotePageNav}
                     />
                 </ErrorBoundary>
@@ -137,6 +191,20 @@ class App extends React.Component {
                         component={AddNote}
                     />
                 </ErrorBoundary>
+
+                <ErrorBoundary>
+                    <Route
+                        path='/edit-note/:noteId'
+                        component={EditNote}
+                    />
+                </ErrorBoundary>
+
+                <ErrorBoundary>
+                    <Route
+                        path='/edit-folder/:folderId'
+                        component={EditFolder}
+                    />
+                </ErrorBoundary>
             </>
         )
     }
@@ -148,6 +216,9 @@ class App extends React.Component {
             addFolder: this.handleAddFolder,
             addNote: this.handleAddNote,
             deleteNote: this.handleDeleteNote,
+            deleteFolder: this.handleDeleteFolder,
+            editNote: this.handleEditNote,
+            editFolder: this.handleEditFolder
         }
         return (
             <ApiContext.Provider value={value}>

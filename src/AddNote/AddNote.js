@@ -37,16 +37,14 @@ export default class AddNote extends React.Component {
         this.setState({
             name: {value: e.target['note-name'].value, touched: true},
             content: {value: e.target['note-content'].value, touched: true},
-            folder: {value: e.target['note-folder-id'].value, touched: true}
+            folder: {name: e.target['note-folder-id'].value, touched: true}
         })
         const newNote = {
-            name: e.target['note-name'].value,
+            note_name: e.target['note-name'].value,
             content: e.target['note-content'].value,
-            folderId: e.target['note-folder-id'].value,
-            modified: new Date(),
+            folder_id: parseInt(e.target['note-folder-id'].value)
         }
-        console.log(newNote.folderId)
-        if (newNote.name.split('').length > 0 && newNote.content.split('').length > 0 && newNote.folderId !== '...') {
+        if (newNote.note_name.split('').length > 0 && newNote.content.split('').length > 0 && newNote.folder_id !== '...') {
             fetch(`${config.API_ENDPOINT}/notes`, {
                 method: 'POST',
                 headers: {
@@ -65,7 +63,7 @@ export default class AddNote extends React.Component {
             })
             .then(note => {
                 this.context.addNote(note)
-                this.props.history.push(`/folder/${note.folderId}`)
+                this.props.history.push(`/folder/${note.folder_id}`)
             })
             .catch(error => {
                 this.setState({
@@ -90,7 +88,7 @@ export default class AddNote extends React.Component {
     }
 
     validateFolder() {
-        const folder = this.state.folder.value;
+        const folder = this.state.folder.name;
         if (folder === '...') {
             return 'Please select a folder';
         }
@@ -127,8 +125,8 @@ export default class AddNote extends React.Component {
                         <select id='note-folder-select' name='note-folder-id'>
                             <option value={null}>...</option>
                             {folders.map(folder =>
-                                <option key={folder.id} value={folder.id}>
-                                    {folder.name}
+                                <option key={folder.folder_id} value={folder.folder_id}>
+                                    {folder.folder_name}
                                 </option>
                             )}
                         </select>

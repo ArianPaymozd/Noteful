@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditFolder component renders the complete form 1`] = `
+<section
+  className="EditFolder"
+>
+  <h2>
+    Edit Folder
+  </h2>
+  <NotefulForm
+    onSubmit={[Function]}
+  >
+    <div
+      className="field"
+    >
+      <label
+        htmlFor="folder-name-input"
+      >
+        Folder Name:
+      </label>
+      <input
+        defaultValue=""
+        id="folder-name-input"
+        name="folder-name"
+        type="text"
+      />
+    </div>
+    <div
+      className="buttons"
+    >
+      <button
+        type="submit"
+      >
+        Edit Folder
+      </button>
+    </div>
+  </NotefulForm>
+</section>
+`;

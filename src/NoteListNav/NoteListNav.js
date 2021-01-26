@@ -1,31 +1,54 @@
 import React from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CircleButton from '../CircleButton/CircleButton'
 import ApiContext from '../ApiContext'
-import { countNotesForFolder } from '../notes-helpers'
 import './NoteListNav.css'
+import Folder from './Folder'
 
 export default class NoteListNav extends React.Component {
+    static defaultProps = {
+        history: {push: () => {}}
+    }
+
+    state = {
+        edit: false
+    }
+
+    handleDelete = () => {
+        this.props.history.push('/')
+    }
+
+    handleEdit = () => {
+        this.setState({
+            edit: !this.state.edit ? true : false
+        })
+    }
+
+    
+
     static contextType = ApiContext;
 
     render() {
-        const { folders=[], notes=[] } = this.context
+        const { folders=[] } = this.context
         return (
             <div className='NoteListNav'>
+                
                 <ul className='NoteListNav__list'>
-                    {folders.map(folder =>
-                        <li key={folder.id}>
-                            <NavLink
-                                className='NoteListNav__folder-link'
-                                to={`/folder/${folder.id}`}
-                            >
-                                <span className='NoteListNav__num-notes'>
-                                    {countNotesForFolder(notes, folder.id)}
-                                </span>
-                                {folder.name}
-                            </NavLink>
-                        </li>
+                    {folders.map((folder, idx) => {
+                    const path = this.state.edit ? `/edit-folder/${folder.folder_id}` : `/folder/${folder.folder_id}`
+                    return (
+                            <li key={folder.folder_id}>
+                                <NavLink
+                                    key={folder.folder_id}
+                                    className='NoteListNav__folder-link'
+                                    to={path}
+                                >
+                                    <Folder key={folder.folder_id} folder_id={folder.folder_id} folder_name={folder.folder_name} deleteFolder={this.handleDelete} editFolder={this.handleEdit}/>
+                                </NavLink>
+                                
+                            </li>
+                        )}
                     )}
                 </ul>
                 <div className='NoteListNav__button-wrapper'>
@@ -38,6 +61,13 @@ export default class NoteListNav extends React.Component {
                         <FontAwesomeIcon icon='plus' />
                         <br />
                         Folder
+                    </CircleButton>
+                    <CircleButton
+                        type='button'
+                        className='NoteListNav__add-folder-button'
+                        onClick={this.handleEdit}
+                    >
+                        {this.state.edit ? 'Select Folder' : 'Edit Folders'}
                     </CircleButton>
                 </div>
             </div>
